@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Entypo from '@expo/vector-icons/Entypo';
 import { useLocalSearchParams, usePathname } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet, SafeAreaView  } from "react-native"
 
 
 const Page = () => {
@@ -48,14 +48,13 @@ const Page = () => {
 
     return (
         <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Entypo size={310} name="circular-graph" style={styles.headerImage} />}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">{training[0].name}</ThemedText>
-      </ThemedView>
-      
-      
-    </ParallaxScrollView>
+            headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+            headerImage={<Entypo size={310} name="circular-graph" style={styles.headerImage} />}>
+                <ThemedView style={styles.titleContainer}>
+                    <ThemedText type="title">{training[0].name}</ThemedText>
+                </ThemedView>
+        
+        </ParallaxScrollView>
     );
     
 }
