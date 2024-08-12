@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Platform, Button } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
+
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -8,6 +8,7 @@ import { StandardCombos } from '@/constants/StandardCombos';
 import { StandardTrainings } from '@/constants/StandardTrainings';
 import { Collapsible } from '@/components/Collapsible';
 import React from 'react';
+import { router } from 'expo-router';
 
 function formatTechnics(technics: number[]): string {
   return technics.join(', ');
@@ -33,7 +34,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         {
           StandardTrainings.map((training, index:number) => (
-            <Collapsible title={training.name}>
+            <Collapsible title={training.name} key={index}>
               <ThemedText>Duration: {calculateTrainingDuration(
                 training.rounds,
                 training['round-duration'],
@@ -52,7 +53,7 @@ export default function HomeScreen() {
               <ThemedText>
                 Rest duration: {training['rest-duration']} seconds
               </ThemedText>
-              <Button title="Start training" onPress={() => {}} />
+              <Button title={`Start ${training.name}`} onPress={() => {router.push({ pathname: `/training/${training.name}` as "/training[trainingName]" })}} />
 
             </Collapsible>
           ))
