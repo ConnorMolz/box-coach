@@ -6,6 +6,7 @@ export const StandardTrainings = [
         "name": "Short training",
         "min-dificulty": 1,
         "max-dificulty": 2,
+        "id": 1
     },
     {
         "round-duration": 45,
@@ -14,6 +15,7 @@ export const StandardTrainings = [
         "name": "Medium training",
         "min-dificulty": 1,
         "max-dificulty": 3,
+        "id": 2
     },
     {
         "round-duration": 60,
@@ -22,4 +24,5 @@ export const StandardTrainings = [
         "name": "Long training",
         "min-dificulty": 2,
         "max-dificulty": 3,
+        "id": 3
     },]
