@@ -1,9 +1,21 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, Button } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { StandardCombos } from '@/constants/StandardCombos';
+import { StandardTrainings } from '@/constants/StandardTrainings';
+import { Collapsible } from '@/components/Collapsible';
+import React from 'react';
+
+function formatTechnics(technics: number[]): string {
+  return technics.join(', ');
+}
+
+function calculateTrainingDuration(rounds: number, roundDuration: number, restDuration:number): number {
+  return rounds * (roundDuration + restDuration) - restDuration;
+}
 
 export default function HomeScreen() {
   return (
@@ -16,35 +28,35 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
+        <ThemedText type="title">Welcome to the Box Coach App</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+        {
+          StandardTrainings.map((training, index:number) => (
+            <Collapsible title={training.name}>
+              <ThemedText>Duration: {calculateTrainingDuration(
+                training.rounds,
+                training['round-duration'],
+                training['rest-duration'],
+              )} seconds
+              </ThemedText>
+              <ThemedText>
+                Diffculty: {training['min-dificulty']} - {training['max-dificulty']}
+              </ThemedText>  
+              <ThemedText>
+                Number of rounds: {training.rounds}
+              </ThemedText>
+              <ThemedText>
+                Round duration: {training['round-duration']} seconds
+              </ThemedText>
+              <ThemedText>
+                Rest duration: {training['rest-duration']} seconds
+              </ThemedText>
+              <Button title="Start training" onPress={() => {}} />
+
+            </Collapsible>
+          ))
+        }
       </ThemedView>
     </ParallaxScrollView>
   );
