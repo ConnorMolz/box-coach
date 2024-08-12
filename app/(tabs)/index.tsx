@@ -53,7 +53,7 @@ export default function HomeScreen() {
               <ThemedText>
                 Rest duration: {training['rest-duration']} seconds
               </ThemedText>
-              <Button title={`Start ${training.name}`} onPress={() => {router.push({ pathname: `/training/${training.name}` as "/training[trainingName]" })}} />
+              <Button title={`Start ${training.name}`} onPress={() => {router.push(`/training/${training.name}` )}} />
 
             </Collapsible>
           ))
