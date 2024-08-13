@@ -24,7 +24,7 @@ const Training = () => {
     const posibleCombos = getPosibleCombos();
     const [language, setLanguage] = React.useState('en')
     const [sounds, setSounds] = React.useState<any[]>([])
-    const [soundIsPlaying, setSoundIsPlaying] = React.useState(false)
+    const [loadedSounds, setLoadedSounds] = React.useState<any[]>([])
     
 
 
@@ -33,7 +33,7 @@ const Training = () => {
             await setLanguage('en')
             console.log(language)
             if (language === 'en') {
-                setSounds(
+                await setSounds(
                     [
                         require('@/assets/Sounds/en/one.mp3'),
                         require('@/assets/Sounds/en/two.mp3'),
@@ -46,6 +46,7 @@ const Training = () => {
                     ]
                 );
                 console.log(sounds)
+                
                 return
             }
             setSounds(
@@ -61,13 +62,29 @@ const Training = () => {
                 ]
             );
             console.log(sounds)
-            return
 
         };
         getSounds();
-        
 
     },[language]);
+
+    useEffect(() => {
+        const loadSounds = async () => {
+            setLoadedSounds(
+                [
+                    await Audio.Sound.createAsync(sounds[0]),
+                    await Audio.Sound.createAsync(sounds[1]),
+                    await Audio.Sound.createAsync(sounds[2]),
+                    await Audio.Sound.createAsync(sounds[3]),
+                    await Audio.Sound.createAsync(sounds[4]),
+                    await Audio.Sound.createAsync(sounds[5]),
+                    await Audio.Sound.createAsync(sounds[6]),
+                    await Audio.Sound.createAsync(sounds[7]),
+                ]
+            );
+        }
+        loadSounds();
+    },[sounds]);
 
     const playSoundsInSequence = async (ids:number[]) => {
         for (let i = 0; i < ids.length; i++) {
@@ -79,22 +96,24 @@ const Training = () => {
           }
       
           try {
-            const { sound } = await Audio.Sound.createAsync(sounds[id - 1]);
-            await sound.playAsync();
+            const { sound } = loadedSounds[id - 1];
+            await sound.replayAsync();
       
             // Wait for the sound to finish before continuing to the next sound
-            await sound.setOnPlaybackStatusUpdate(async (status) => {
-                // @ts-ignore
+            await sound.setOnPlaybackStatusUpdate(async (status:any) => {
               if (status.didJustFinish) {
                 // Unload the sound from memory when done
-                await sound.unloadAsync();
+
               }
             });
       
             // Ensure we wait until the sound is unloaded before moving to the next sound
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 600));
           } catch (error) {
             console.error('Error playing sound', error);
+            let currentLanguage = language;
+            setLanguage('');
+            setLanguage(currentLanguage);
           }
         }
       };
