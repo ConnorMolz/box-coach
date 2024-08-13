@@ -30,6 +30,17 @@ const Training = () => {
         }
         return result;
     }
+
+    function getRandomCombo() {
+        return posibleCombos[Math.floor(Math.random() * posibleCombos.length)].Technics;
+    }
+
+    function playComboTts(combo:number[]) {
+        console.log(combo)
+        for(let i = 0; i < combo.length; i++) {
+
+        }
+    }
     
     function startTraining() {
         setStarted(true)
@@ -40,6 +51,14 @@ const Training = () => {
 
     useEffect(() => {
         let timerId: NodeJS.Timeout;
+
+        if(!started) {
+            return;
+        }
+
+        if(remainingTime != 0 && remainingTime % 5 === 0) {
+            playComboTts(getRandomCombo())
+        }
 
         // Exit early when we reach 0
         if (remainingTime === 0 && !resting && started) {
