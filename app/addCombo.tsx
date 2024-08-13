@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,7 +8,6 @@ const addCombo = () => {
     const [difficulty, setDifficulty] = React.useState(0);
     const [comboAsText, setComboAsText] = React.useState('');
     
-    useEffect(() => {
     function technicNames(technics: number[]) {
         let formattedTechnics = technics.join(', ');
         formattedTechnics = formattedTechnics.replaceAll('1', 'Jab');
@@ -20,13 +19,15 @@ const addCombo = () => {
         formattedTechnics = formattedTechnics.replaceAll('7', 'Dodge');
         formattedTechnics = formattedTechnics.replaceAll('8', 'Block');
         setComboAsText(formattedTechnics);
-      }}, [combo]);
+      }
+        
     
     function addTechnic(technic: number) {
         const currentCombo: number[] = combo;
         currentCombo.push(technic);
         console.log(currentCombo);
         setCombo(currentCombo);
+        technicNames(combo);
     }
 
     function removeLast() {
@@ -34,10 +35,11 @@ const addCombo = () => {
         currentCombo.pop();
         setCombo(currentCombo);
         console.log(currentCombo);
+        technicNames(combo);
     }
 
     return (
-        <View className='flex-1 bg-gray-800'>
+        <ScrollView className='flex-1 bg-gray-800'>
             <SafeAreaView>
                 <Text className='flex text-3xl text-blue-500 text-center py-10 bg-gray-900'>Add a new Combo</Text>
 
@@ -63,7 +65,7 @@ const addCombo = () => {
                     <Button title="Save" onPress={() => {}}></Button>
                 </View>
             </SafeAreaView>
-        </View>
+        </ScrollView>
     )
 }
 
