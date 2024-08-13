@@ -84,6 +84,7 @@ const Training = () => {
       
             // Wait for the sound to finish before continuing to the next sound
             await sound.setOnPlaybackStatusUpdate(async (status) => {
+                // @ts-ignore
               if (status.didJustFinish) {
                 // Unload the sound from memory when done
                 await sound.unloadAsync();
@@ -91,7 +92,7 @@ const Training = () => {
             });
       
             // Ensure we wait until the sound is unloaded before moving to the next sound
-            await new Promise(resolve => setTimeout(resolve, 300));
+            await new Promise(resolve => setTimeout(resolve, 500));
           } catch (error) {
             console.error('Error playing sound', error);
           }
@@ -119,12 +120,20 @@ const Training = () => {
 
      
     
-    function startTraining() {
+    async function startTraining() {
         setLanguage(language);
         setStarted(true)
         setRemainingTime(currentTraining['round-duration'])
         setRounds(currentTraining.rounds)
         setCurrentRound(1)
+        const { sound } = await Audio.Sound.createAsync(require('@/assets/Sounds/en/start.mp3'));
+        await sound.playAsync();
+        await sound.setOnPlaybackStatusUpdate(async (status) => {
+            // @ts-ignore
+            if (status.didJustFinish) {
+                await sound.unloadAsync();
+            }
+        })
     }
 
     useEffect(() => {
@@ -141,18 +150,51 @@ const Training = () => {
         // Exit early when we reach 0
         if (remainingTime === 0 && !resting && started) {
             if(rounds === currentRound) {
+                const play = async () => {
+                    const { sound } = await Audio.Sound.createAsync(require('@/assets/Sounds/en/end.mp3'));
+                    await sound.playAsync();
+                    await sound.setOnPlaybackStatusUpdate(async (status) => {
+                        // @ts-ignore
+                        if (status.didJustFinish) {
+                        await sound.unloadAsync();
+                        }
+                    })
+                }
+                play()
                 setStarted(false)
                 console.log('Training finished')
                 router.navigate('/')
                 return;
             }
             setResting(true);
+            const play = async () => {
+                const { sound } = await Audio.Sound.createAsync(require('@/assets/Sounds/en/rest.mp3'));
+                await sound.playAsync();
+                await sound.setOnPlaybackStatusUpdate(async (status) => {
+                    // @ts-ignore
+                    if (status.didJustFinish) {
+                    await sound.unloadAsync();
+                    }
+                })
+            }
+            play()
             setCurrentSession('Resting');
             setRemainingTime(currentTraining['rest-duration']);
             return;
         }
         if (remainingTime === 0 && resting) {
             setResting(false);
+            const play = async () => {
+                const { sound } = await Audio.Sound.createAsync(require('@/assets/Sounds/en/start.mp3'));
+                await sound.playAsync();
+                await sound.setOnPlaybackStatusUpdate(async (status) => {
+                    // @ts-ignore
+                    if (status.didJustFinish) {
+                    await sound.unloadAsync();
+                    }
+                })
+            }
+            play()
             setCurrentSession('Training');
             setCurrentRound(currentRound + 1);
             setRemainingTime(currentTraining['round-duration']);
