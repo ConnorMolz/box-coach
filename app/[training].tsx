@@ -240,7 +240,15 @@ const Training = () => {
 
 
                 {
-                    !started ? <Button title={`Start ${currentTraining.name}`}  onPress={() => {startTraining()}} /> : null
+                    !started ? 
+                    <View className=' text-white text-center justyfy-center flex w-max align-middle place-content-center py-52'>
+                        <Button 
+                            title={`Start ${currentTraining.name}`}  
+                            onPress={() => {startTraining()}} 
+                            />
+                    </View> 
+                        : 
+                        null
                 }
 
                 {
