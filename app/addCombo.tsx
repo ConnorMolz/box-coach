@@ -1,11 +1,11 @@
-import { View, Text, Button, ScrollView } from 'react-native'
+import { View, Text, Button, ScrollView, StyleSheet, TextInput} from 'react-native'
 import React, { useEffect } from 'react'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const addCombo = () => {
     const [combo, setCombo] = React.useState<number[]>([]);
-    const [difficulty, setDifficulty] = React.useState(0);
+    const [difficulty, setDifficulty] = React.useState('0');
     const [comboAsText, setComboAsText] = React.useState('');
     
     function technicNames(technics: number[]) {
@@ -61,6 +61,18 @@ const addCombo = () => {
                 </View>
 
                 <View>
+                    <Text className="flex text-xl text-blue-300 text-left py-2">
+                        Difficulty:  
+                    </Text> 
+                    <TextInput
+                            style={styles.input}
+                            onChangeText={setDifficulty}
+                            value={difficulty}
+                            keyboardType='numeric'
+                            maxLength={1}
+                        />
+                </View>
+                <View>
                     <Button title="Cancle" onPress={() => {router.navigate("/(tabs)/combos")}}></Button>
                     <Button title="Save" onPress={() => {}}></Button>
                 </View>
@@ -68,5 +80,15 @@ const addCombo = () => {
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      color: 'white',
+    },
+  });
 
 export default addCombo
