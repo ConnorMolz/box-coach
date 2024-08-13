@@ -1,14 +1,7 @@
 export const tts = [
     {
         "language": "en",
-        1: "one.mp3",
-        2: "two.mp3",
-        3: "three.mp3",
-        4: "four.mp3",
-        5: "five.mp3",
-        6: "six.mp3",
-        7: "dodge.mp3",
-        8: "block.mp3",
+        "sounds": ["one.mp3", "two.mp3", "three.mp3", "four.mp3", "five.mp3", "six.mp3", "dodge.mp3", "block.mp3"]
     }
 ]
 
