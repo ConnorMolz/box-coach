@@ -56,7 +56,7 @@ const Training = () => {
             return;
         }
 
-        if(remainingTime != 0 && remainingTime % 5 === 0) {
+        if(remainingTime != 0 && remainingTime % 5 === 0 && !resting && remainingTime != currentTraining['round-duration']) {
             playComboTts(getRandomCombo())
         }
 
