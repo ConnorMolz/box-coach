@@ -1,70 +1,56 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import{ Button, Image, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StandardTrainings } from '@/constants/StandardTrainings';
+import { Collapsible } from '@/components/Collapsible';
+import React, { Component } from 'react';
+import { router } from 'expo-router';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+function formatTechnics(technics: number[]): string {
+    return technics.join(', ');
+  }
+  
+  function calculateTrainingDuration(rounds: number, roundDuration: number, restDuration:number): number {
+    return rounds * (roundDuration + restDuration) - restDuration;
+  }
 
-export default function HomeScreen() {
+export default function Home() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View className='flex-1 bg-gray-800'>
+        <SafeAreaView className='flex-1 bg-gray-800'>
+            <Text className='flex text-3xl text-blue-500 text-center bg-gray-900'>
+                Welcome to the Boxing Trainer app!
+            </Text>
+            <Text className='flex text-xl text-blue-300 text-left py-10'>
+                Your Trainingprogramms:
+            </Text>
+            {
+                StandardTrainings.map((training) => (
+                    <Collapsible title={training.name} key={training.name}>
+                        <>
+                        <Text className='flex text text-blue-300 text-left py-2'>Duration: {calculateTrainingDuration(
+                                training.rounds,
+                                training['round-duration'],
+                                training['rest-duration'],
+                            )} seconds
+                        </Text>
+                        <Text className='flex text text-blue-300 text-left py-2'>
+                            Diffculty: {training['min-dificulty']} - {training['max-dificulty']}
+                        </Text>  
+                        <Text className='flex text text-blue-300 text-left py-2'>
+                            Number of rounds: {training.rounds}
+                        </Text>
+                        <Text className='flex text text-blue-300 text-left py-2'>
+                            Round duration: {training['round-duration']} seconds
+                        </Text>
+                        <Text className='flex text text-blue-300 text-left py-2'>
+                            Rest duration: {training['rest-duration']} seconds
+                        </Text>
+                        <Button title={`Start ${training.name}`} onPress={() => {router.navigate(`/${training.name}`)}} />
+                            </>
+                    </Collapsible>
+                ))
+            }
+        </SafeAreaView>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
