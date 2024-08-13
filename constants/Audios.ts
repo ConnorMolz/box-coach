@@ -7,7 +7,7 @@ export const tts = [
 
 let language = "en";
 
-export const AUDIO_Files: { [key: string]: any } = {
+export const AUDIO_FILES: { [key: string]: any } = {
     "one.mp3": require(`@/assets/audio/${language}/one.mp3`),
     "two.mp3": require(`@/assets/audio/${language}/two.mp3`),
     "three.mp3": require(`@/assets/audio/${language}/three.mp3`),
