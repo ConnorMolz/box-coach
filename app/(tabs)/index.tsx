@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <View className='flex-1 bg-gray-800'>
         <SafeAreaView className='flex-1 bg-gray-800'>
-            <Text className='flex text-3xl text-blue-500 text-center'>
+            <Text className='flex text-3xl text-blue-500 text-center bg-gray-900'>
                 Welcome to the Boxing Trainer app!
             </Text>
             <Text className='flex text-xl text-blue-300 text-left py-10'>

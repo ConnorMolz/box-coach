@@ -28,7 +28,7 @@ const combos = () => {
   return (
     <View className='flex-1 bg-gray-800'>
         <SafeAreaView className='flex-1 bg-gray-800'>
-            <Text className='flex text-3xl text-blue-500 text-center py-10'>combos</Text>
+            <Text className='flex text-3xl text-blue-500 text-center py-10 bg-gray-900'>combos</Text>
             {
                 StandardCombos.map((combo, index:number) => (
                     <Collapsible title={formatTechnics(combo.Technics)} key={index}>
