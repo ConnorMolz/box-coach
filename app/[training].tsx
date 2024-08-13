@@ -5,6 +5,8 @@ import { StandardTrainings } from '@/constants/StandardTrainings'
 import { router, useLocalSearchParams } from 'expo-router'
 import { TimerContext } from "@/context/TimerContext";
 import { StandardCombos } from '@/constants/StandardCombos'
+import { Audio } from 'expo-av'
+
 
 const Training = () => {
 
@@ -20,6 +22,81 @@ const Training = () => {
     const { duration: secondsRemaining, setDuration } = useContext(TimerContext);
     const [currentSession, setCurrentSession] = React.useState('Training')
     const posibleCombos = getPosibleCombos();
+    const [language, setLanguage] = React.useState('en')
+    const [sounds, setSounds] = React.useState<any[]>([])
+    const [soundIsPlaying, setSoundIsPlaying] = React.useState(false)
+    
+
+
+    useEffect(() => {
+        const getSounds = async() => {
+            await setLanguage('en')
+            console.log(language)
+            if (language === 'en') {
+                setSounds(
+                    [
+                        require('@/assets/Sounds/en/one.mp3'),
+                        require('@/assets/Sounds/en/two.mp3'),
+                        require('@/assets/Sounds/en/three.mp3'),
+                        require('@/assets/Sounds/en/four.mp3'),
+                        require('@/assets/Sounds/en/five.mp3'),
+                        require('@/assets/Sounds/en/six.mp3'),
+                        require('@/assets/Sounds/en/dodge.mp3'),
+                        require('@/assets/Sounds/en/block.mp3'),
+                    ]
+                );
+                console.log(sounds)
+                return
+            }
+            setSounds(
+                [
+                    require('@/assets/Sounds/en/one.mp3'),
+                    require('@/assets/Sounds/en/two.mp3'),
+                    require('@/assets/Sounds/en/three.mp3'),
+                    require('@/assets/Sounds/en/four.mp3'),
+                    require('@/assets/Sounds/en/five.mp3'),
+                    require('@/assets/Sounds/en/six.mp3'),
+                    require('@/assets/Sounds/en/dodge.mp3'),
+                    require('@/assets/Sounds/en/block.mp3'),
+                ]
+            );
+            console.log(sounds)
+            return
+
+        };
+        getSounds();
+        
+
+    },[language]);
+
+    const playSoundsInSequence = async (ids:number[]) => {
+        for (let i = 0; i < ids.length; i++) {
+          const id = ids[i];
+      
+          if (id < 0 || id > 7) {
+            console.error('Invalid sound ID. Please provide an ID between 0 and 7.');
+            continue;
+          }
+      
+          try {
+            const { sound } = await Audio.Sound.createAsync(sounds[id - 1]);
+            await sound.playAsync();
+      
+            // Wait for the sound to finish before continuing to the next sound
+            await sound.setOnPlaybackStatusUpdate(async (status) => {
+              if (status.didJustFinish) {
+                // Unload the sound from memory when done
+                await sound.unloadAsync();
+              }
+            });
+      
+            // Ensure we wait until the sound is unloaded before moving to the next sound
+            await new Promise(resolve => setTimeout(resolve, 300));
+          } catch (error) {
+            console.error('Error playing sound', error);
+          }
+        }
+      };
 
     function getPosibleCombos() {
         let result = [];
@@ -35,14 +112,15 @@ const Training = () => {
         return posibleCombos[Math.floor(Math.random() * posibleCombos.length)].Technics;
     }
 
-    function playComboTts(combo:number[]) {
+    async function playComboTts(combo:number[]) {
         console.log(combo)
-        for(let i = 0; i < combo.length; i++) {
-
-        }
+        playSoundsInSequence(combo)
     }
+
+     
     
     function startTraining() {
+        setLanguage(language);
         setStarted(true)
         setRemainingTime(currentTraining['round-duration'])
         setRounds(currentTraining.rounds)
