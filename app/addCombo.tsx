@@ -2,6 +2,9 @@ import { View, Text, Button, ScrollView, StyleSheet, TextInput} from 'react-nati
 import React, { useEffect } from 'react'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import * as FileSystem from 'expo-file-system';
+import { comboPath } from '@/constants/Paths';
+
 
 const addCombo = () => {
     const [combo, setCombo] = React.useState<number[]>([]);
@@ -36,6 +39,39 @@ const addCombo = () => {
         setCombo(currentCombo);
         console.log(currentCombo);
         technicNames(combo);
+    }
+
+    const saveCombo = async() => {
+        const newCombo = {
+            "Technics": combo,
+            "difficulty": difficulty,
+        }
+        let allCombos:object;
+        let first = false;
+        try{
+            //await FileSystem.deleteAsync(comboPath);
+            const raw = await FileSystem.readAsStringAsync(comboPath);
+            console.log(raw);
+            console.log("---")
+            allCombos = JSON.parse(raw);
+            console.log(allCombos);
+            console.log("-----")
+        }
+        catch{
+            console.log('No combos found');
+            allCombos = {combos:[{Technics: combo, difficulty: difficulty}]};
+            first = true;
+        }
+        
+        if(!first){
+            // @ts-ignore
+            console.log(allCombos.combos[0]);
+            // @ts-ignore
+            await allCombos.combos.push(newCombo);
+        }
+        console.log("All Combos: " + allCombos);
+        FileSystem.writeAsStringAsync(comboPath, JSON.stringify(newCombo));
+        router.navigate("/(tabs)/combos");
     }
 
     return (
@@ -74,7 +110,7 @@ const addCombo = () => {
                 </View>
                 <View>
                     <Button title="Cancle" onPress={() => {router.navigate("/(tabs)/combos")}}></Button>
-                    <Button title="Save" onPress={() => {}}></Button>
+                    <Button title="Save" onPress={() => {saveCombo()}}></Button>
                 </View>
             </SafeAreaView>
         </ScrollView>
