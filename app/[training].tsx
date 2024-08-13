@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StandardTrainings } from '@/constants/StandardTrainings'
 import { router, useLocalSearchParams } from 'expo-router'
 import { TimerContext } from "@/context/TimerContext";
+import { StandardCombos } from '@/constants/StandardCombos'
 
 const Training = () => {
 
@@ -18,6 +19,17 @@ const Training = () => {
     const [resting, setResting] = React.useState(false)
     const { duration: secondsRemaining, setDuration } = useContext(TimerContext);
     const [currentSession, setCurrentSession] = React.useState('Training')
+    const posibleCombos = getPosibleCombos();
+
+    function getPosibleCombos() {
+        let result = [];
+        for(let i = 0; i < StandardCombos.length; i++) {
+            if(StandardCombos[i].difficulty >= currentTraining['min-dificulty'] && StandardCombos[i].difficulty <= currentTraining['max-dificulty']) {
+                result.push(StandardCombos[i])
+            }
+        }
+        return result;
+    }
     
     function startTraining() {
         setStarted(true)
