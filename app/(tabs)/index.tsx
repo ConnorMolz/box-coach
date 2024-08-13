@@ -45,7 +45,7 @@ export default function Home() {
                         <Text className='flex text text-blue-300 text-left py-2'>
                             Rest duration: {training['rest-duration']} seconds
                         </Text>
-                        <Button title={`Start ${training.name}`} onPress={() => {}} />
+                        <Button title={`Start ${training.name}`} onPress={() => {router.navigate(`/${training.name}`)}} />
                             </>
                     </Collapsible>
                 ))
