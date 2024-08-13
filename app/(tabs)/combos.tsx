@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StandardTrainings } from '@/constants/StandardTrainings';
 import { Collapsible } from '@/components/Collapsible';
 import { StandardCombos } from '@/constants/StandardCombos';
+import { router } from 'expo-router';
 
 function formatTechnics(technics: number[]): string {
     let formattedTechnics = technics.join(', ');
@@ -39,7 +40,7 @@ const combos = () => {
                     </Collapsible>
                 ))
             }
-
+            <Button title="Add Combo" onPress={() => router.navigate("/addCombo")} />
         </SafeAreaView>
     </View>
   )
