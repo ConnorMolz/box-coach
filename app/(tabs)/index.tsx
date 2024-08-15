@@ -44,6 +44,11 @@ function formatTechnics(technics: number[]): string {
 
     return trainings;
   }
+function deleteTraining(id:number) {
+    const db = SQLite.openDatabaseSync('box-coach');
+    db.runSync('DELETE FROM trainings WHERE training_id = ?', [id]);
+    router.navigate('/');
+}
 
 
 export default function Home() {
@@ -80,6 +85,7 @@ export default function Home() {
                                 Rest duration: {training['rest-duration']} seconds
                             </Text>
                             <Button title={`Start ${training.name}`} onPress={() => {router.navigate(`/${training.name}`)}} />
+                            <Button title="Delete" onPress={() => {deleteTraining(training.id)}} />
                                 </>
                         </Collapsible>
                     ))
