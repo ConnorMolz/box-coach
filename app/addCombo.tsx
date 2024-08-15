@@ -44,10 +44,6 @@ const addCombo = () => {
     const saveCombo = async() => {
         const db = SQLite.openDatabaseSync('box-coach');
 
-        db.execSync(
-            'CREATE TABLE IF NOT EXISTS combos(id INTEGER PRIMARY KEY AUTOINCREMENT, technics TEXT,difficulty INTEGER)'
-        );
-
         const statement = db.prepareSync('INSERT INTO combos (technics, difficulty) VALUES (?, ?)');
         statement.executeSync([combo.join(','), parseInt(difficulty)]);
 

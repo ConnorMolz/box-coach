@@ -6,13 +6,14 @@ import { router, useLocalSearchParams } from 'expo-router'
 import { TimerContext } from "@/context/TimerContext";
 import { StandardCombos } from '@/constants/StandardCombos'
 import { Audio } from 'expo-av'
+import * as SQLite from 'expo-sqlite'
 
 
 const Training = () => {
 
     const { training } = useLocalSearchParams();
 
-    const currentTraining = (StandardTrainings.filter((trainings) => trainings.name === training)[0])
+    const currentTraining = getTraining(String(training));
 
     const [remainingTime, setRemainingTime] = React.useState(0)
     const [rounds, setRounds] = React.useState(0)
@@ -26,7 +27,42 @@ const Training = () => {
     const [sounds, setSounds] = React.useState<any[]>([])
     const [loadedSounds, setLoadedSounds] = React.useState<any[]>([])
     
+    function getTraining(name: string) {
+        let id = 0;
+        for (let i = 0; i < StandardTrainings.length; i++) {
+            if (StandardTrainings[i].name === name) {
+                id = StandardTrainings[i].id;
+                break;
+            }
+            id = 0;
+        }
+        if(id < 0) {
+            return(StandardTrainings.filter((trainings) => trainings.name === training)[0])
+        }
 
+        const db = SQLite.openDatabaseSync('box-coach');
+
+        const allRows: {
+            training_id: number,
+            round_duration: number,
+            rounds: number,
+            name: string,
+            rest_duration: number,
+            min_difficulty: number,
+            max_difficulty: number,
+        }[] = db.getAllSync('SELECT * FROM trainings WHERE name = ?', [name]);
+
+        return {
+            "round-duration": allRows[0].round_duration,
+            "rounds": allRows[0].rounds,
+            "rest-duration": allRows[0].rest_duration,
+            "name": allRows[0].name,
+            "min-dificulty": allRows[0].min_difficulty,
+            "max-dificulty": allRows[0].max_difficulty,
+            "id": allRows[0].training_id
+        }
+    
+    }
 
     useEffect(() => {
         const getSounds = async() => {
@@ -124,6 +160,12 @@ const Training = () => {
             if(StandardCombos[i].difficulty >= currentTraining['min-dificulty'] && StandardCombos[i].difficulty <= currentTraining['max-dificulty']) {
                 result.push(StandardCombos[i])
             }
+        }
+        const db = SQLite.openDatabaseSync('box-coach');
+        const allRows: { id: number, technics:string, difficulty:number}[] = db.getAllSync('SELECT * FROM combos WHERE difficulty >= ? AND difficulty <= ?', [currentTraining['min-dificulty'], currentTraining['max-dificulty']]);
+        for (let i = 0; i < allRows.length; i++) {
+            const technics = allRows[i].technics.split(',').map((x) => parseInt(x));
+            result.push({"id": allRows[i].id, "Technics": technics, "difficulty": allRows[i].difficulty});
         }
         return result;
     }
