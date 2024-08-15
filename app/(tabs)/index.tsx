@@ -50,6 +50,7 @@ export default function Home() {
                     </Collapsible>
                 ))
             }
+            <Button title='Add new Training' onPress={() => {router.navigate('/addTraining')}} />
         </SafeAreaView>
     </View>
   );
