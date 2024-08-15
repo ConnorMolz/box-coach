@@ -34,10 +34,16 @@ function technicNames(technics: number[]): string {
     const allRows: { id: number, technics:string, difficulty:number}[] = db.getAllSync('SELECT * FROM combos');
         for (let i = 0; i < allRows.length; i++) {
             const technics = allRows[i].technics.split(',').map((x) => parseInt(x));
-            userCombos.push({ "Technics": technics, "difficulty": allRows[i].difficulty});
+            userCombos.push({"id": allRows[i].id, "Technics": technics, "difficulty": allRows[i].difficulty});
         }
 
     return userCombos;
+}
+
+function deleteCombo(id:number) {
+    const db = SQLite.openDatabaseSync('box-coach');
+    db.runSync('DELETE FROM combos WHERE id = ?', [id]);
+    router.navigate('/combos');
 }
 
 const combos = () => {
@@ -54,6 +60,7 @@ const combos = () => {
                             <>
                             <Text className='flex text text-blue-300 text-left py-2'>{technicNames(combo.Technics)}</Text>
                             <Text className='flex text text-blue-300 text-left py-2'>Difficulty: {combo.difficulty}</Text>
+                            <Button title="Delete" onPress={() => {deleteCombo(combo.id)}} />
                                 </>
                         </Collapsible>
                     ))
