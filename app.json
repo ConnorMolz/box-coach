@@ -29,12 +29,9 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-av",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
-        }
-      ]
+      "expo-av",
+      "expo-system-ui",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
