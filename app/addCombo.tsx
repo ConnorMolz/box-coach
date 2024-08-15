@@ -1,12 +1,12 @@
 import { View, Text, Button, ScrollView, StyleSheet, TextInput} from 'react-native'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as SQLite from 'expo-sqlite';
 
 
 
-const addCombo = () => {
+const AddCombo = () => {
     const [combo, setCombo] = React.useState<number[]>([]);
     const [difficulty, setDifficulty] = React.useState('0');
     const [comboAsText, setComboAsText] = React.useState('');
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default addCombo
+export default AddCombo
