@@ -29,7 +29,7 @@
       },
       "node": "20.0.14",
       "env": {
-        "ANDROID_SDK_ROOT": "/home/connor/Android/Sdk"
+        "ANDROID_SDK_ROOT": "/home/Connor/Android/Sdk"
       }
     }
   },
