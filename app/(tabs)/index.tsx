@@ -1,14 +1,10 @@
-import{ Button, Image, ScrollView, Text, View } from 'react-native';
+import{ Button, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StandardTrainings } from '@/constants/StandardTrainings';
 import { Collapsible } from '@/components/Collapsible';
-import React, { Component } from 'react';
+import React from 'react';
 import { router } from 'expo-router';
 import * as SQLite from 'expo-sqlite';
-
-function formatTechnics(technics: number[]): string {
-    return technics.join(', ');
-  }
   
   function calculateTrainingDuration(rounds: number, roundDuration: number, restDuration:number): number {
     return rounds * (roundDuration + restDuration) - restDuration;
