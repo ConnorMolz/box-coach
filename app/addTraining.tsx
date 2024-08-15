@@ -10,14 +10,17 @@ const addTraining = () => {
 
     function addTrainingToDB() {
         const db = SQLite.openDatabaseSync('box-coach');
-    
+        //db.execSync('DROP TABLE IF EXISTS trainings');
+
         db.execSync(
-            'CREATE TABLE IF NOT EXISTS trainings(id INT AUTO_INCREMENT PRIMARY KEY,round-duration INT NOT NULL,rounds INT NOT NULL,rest-duration INT NOT NULL,name VARCHAR(255) NOT NULL,min-difficulty INT NOT NULL,max-difficulty INT NOT NULL,id INT NOT NULL)'
+            'CREATE TABLE IF NOT EXISTS trainings(training_id INTEGER PRIMARY KEY AUTOINCREMENT, round_duration INTEGER, rounds INTEGER, rest_duration INTEGER, name VARCHAR(255), min_difficulty INTEGER, max_difficulty INTEGER)'
         );
-    
-        const statement = db.prepareSync('INSERT INTO trainings (round-duration, rounds, rest-duration, name, min-difficulty, max-difficulty) VALUES (?,?,?,?,?,?)');
-        statement.executeSync([roundDuration, rounds, restDuration, name, minDifficulty, maxDifficulty]);
-    
+
+        const statement = db.prepareSync('INSERT INTO trainings (round_duration, rounds, rest_duration, name, min_difficulty, max_difficulty) VALUES (?,?,?,?,?,?)');
+
+        statement.executeSync([parseInt(roundDuration), parseInt(rounds), parseInt(restDuration), name, parseInt(minDifficulty), parseInt(maxDifficulty)]);
+        
+        router.back();
     }
 
     const [name, setName] = React.useState('');
@@ -52,7 +55,7 @@ const addTraining = () => {
                     onChangeText={setRounds}
                     value={rounds}
                     keyboardType='numeric'
-                    maxLength={1}
+                    maxLength={3}
                     />
             </View>
             <View>
