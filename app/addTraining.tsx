@@ -4,18 +4,22 @@ import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as SQLite from 'expo-sqlite';
 
-function addTrainingToDB() {
-    const db = SQLite.openDatabaseSync('box-coach');
 
-    db.execSync(
-        'CREATE TABLE IF NOT EXISTS trainings(id INT AUTO_INCREMENT PRIMARY KEY,round-duration INT NOT NULL,rounds INT NOT NULL,rest-duration INT NOT NULL,name VARCHAR(255) NOT NULL,min-difficulty INT NOT NULL,max-difficulty INT NOT NULL,id INT NOT NULL)'
-    );
-
-    db.execSync('');
-
-}
 
 const addTraining = () => {
+
+    function addTrainingToDB() {
+        const db = SQLite.openDatabaseSync('box-coach');
+    
+        db.execSync(
+            'CREATE TABLE IF NOT EXISTS trainings(id INT AUTO_INCREMENT PRIMARY KEY,round-duration INT NOT NULL,rounds INT NOT NULL,rest-duration INT NOT NULL,name VARCHAR(255) NOT NULL,min-difficulty INT NOT NULL,max-difficulty INT NOT NULL,id INT NOT NULL)'
+        );
+    
+        const statement = db.prepareSync('INSERT INTO trainings (round-duration, rounds, rest-duration, name, min-difficulty, max-difficulty) VALUES (?,?,?,?,?,?)');
+        statement.executeSync([roundDuration, rounds, restDuration, name, minDifficulty, maxDifficulty]);
+    
+    }
+
     const [name, setName] = React.useState('');
     const [rounds, setRounds] = React.useState('0');
     const [roundDuration, setRoundDuration] = React.useState('0');
@@ -99,7 +103,7 @@ const addTraining = () => {
                         maxLength={1}
                     />
             </View>
-            <Button title="Save" onPress={() => {}}></Button>
+            <Button title="Save" onPress={() => {addTrainingToDB()}}></Button>
             <Button title="Cancle" onPress={() => {router.back()}}></Button>
       </SafeAreaView>
     </ScrollView>
