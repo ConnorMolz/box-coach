@@ -20,7 +20,7 @@ const Training = () => {
     const [currentRound, setCurrentRound] = React.useState(0)
     const [started, setStarted] = React.useState(false)
     const [resting, setResting] = React.useState(false)
-    const { duration: secondsRemaining, setDuration } = useContext(TimerContext);
+    const { setDuration } = useContext(TimerContext);
     const [currentSession, setCurrentSession] = React.useState('Training')
     const posibleCombos = getPosibleCombos();
     const [language, setLanguage] = React.useState('en')
@@ -102,7 +102,7 @@ const Training = () => {
         };
         getSounds();
 
-    },[language]);
+    },[language, sounds]);
 
     useEffect(() => {
         const loadSounds = async () => {
@@ -204,7 +204,7 @@ const Training = () => {
             return;
         }
 
-        if(remainingTime != 0 && remainingTime % 5 === 0 && !resting && remainingTime != currentTraining['round-duration']) {
+        if(remainingTime !== 0 && remainingTime % 5 === 0 && !resting && remainingTime !== currentTraining['round-duration']) {
             playComboTts(getRandomCombo())
         }
 
@@ -272,6 +272,7 @@ const Training = () => {
         return () => {
             clearTimeout(timerId);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [remainingTime, resting]);
     
 
