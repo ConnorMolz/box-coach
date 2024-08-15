@@ -10,7 +10,8 @@
     "preview": {
       "android": {
         "distribution": "internal",
-        "buildType": "apk"
+        "buildType": "apk",
+        "extends": "production",
       },
       "distribution": "internal"
     },
@@ -23,20 +24,14 @@
       "developmentClient": true
     },
     
-    "production": {}
+    "production": {
+      "android": {
+        "buildType": "apk"
+      },
+      "node": "20.0.14"
+    }
   },
   "submit": {
     "production": {}
-  },
-  "expo": {
-    "name": "box-coach",
-    "apk": {
-      "release": {
-        "keystore": "distribution.jks",
-        "keystorePassword": "password",
-        "keyAlias": "distribution",
-        "keyPassword": "password"
-      }
-    }
   }
 }
