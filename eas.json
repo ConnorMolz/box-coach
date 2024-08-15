@@ -27,7 +27,10 @@
       "android": {
         "buildType": "apk"
       },
-      "node": "20.0.14"
+      "node": "20.0.14",
+      "env": {
+        "ANDROID_SDK_ROOT": "/home/connor/Android/Sdk"
+      }
     }
   },
   "submit": {
