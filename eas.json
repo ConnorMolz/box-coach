@@ -27,5 +27,16 @@
   },
   "submit": {
     "production": {}
+  },
+  "expo": {
+    "name": "box-coach",
+    "apk": {
+      "release": {
+        "keystore": "distribution.jks",
+        "keystorePassword": "password",
+        "keyAlias": "distribution",
+        "keyPassword": "password"
+      }
+    }
   }
 }
