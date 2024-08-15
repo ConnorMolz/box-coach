@@ -1,12 +1,12 @@
 import { View, Text, Button, ScrollView, StyleSheet, TextInput} from 'react-native'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { router } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as SQLite from 'expo-sqlite';
 
 
 
-const addTraining = () => {
+const AddTraining = () => {
 
     function addTrainingToDB() {
         const db = SQLite.openDatabaseSync('box-coach');
@@ -123,4 +123,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default addTraining
+export default AddTraining
