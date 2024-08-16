@@ -106,6 +106,9 @@ const Training = () => {
 
     useEffect(() => {
         const loadSounds = async () => {
+            if(sounds.length === 0) {
+                return;
+            }
             setLoadedSounds(
                 [
                     await Audio.Sound.createAsync(sounds[0]),
@@ -273,7 +276,7 @@ const Training = () => {
             clearTimeout(timerId);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [remainingTime, resting]);
+    }, [remainingTime]);
     
 
     return (
