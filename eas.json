@@ -10,7 +10,7 @@
     "preview": {
       "android": {
         "distribution": "internal",
-        "buildType": "apk"
+        "buildType": "app-bundle"
       },
       "distribution": "internal"
     },
@@ -25,7 +25,7 @@
     
     "production": {
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle"
       },
       "node": "20.0.14",
       "env": {
