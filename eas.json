@@ -30,7 +30,7 @@
       "node": "20.0.14",
       "env": {
         "ANDROID_SDK_ROOT": "/usr/lib/android-sdk",
-        "ANDROID_HOME": "/usr/lib/android-sdk"
+        "ANDROID_HOME": "/home/connor/Android/Sdk",
       }
     }
   },
