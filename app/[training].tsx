@@ -102,7 +102,7 @@ const Training = () => {
         };
         getSounds();
 
-    },[language, sounds]);
+    },[language]);
 
     useEffect(() => {
         const loadSounds = async () => {
