@@ -67,7 +67,7 @@ const Training = () => {
     useEffect(() => {
         const getSounds = async() => {
             await setLanguage('en')
-            console.log(language)
+
             if (language === 'en') {
                 await setSounds(
                     [
@@ -81,7 +81,7 @@ const Training = () => {
                         require('@/assets/Sounds/en/block.mp3'),
                     ]
                 );
-                console.log(sounds)
+
                 
                 return
             }
@@ -97,7 +97,7 @@ const Training = () => {
                     require('@/assets/Sounds/en/block.mp3'),
                 ]
             );
-            console.log(sounds)
+
 
         };
         getSounds();
@@ -164,12 +164,12 @@ const Training = () => {
                 result.push(StandardCombos[i])
             }
         }
-        const db = SQLite.openDatabaseSync('box-coach');
+        /*const db = SQLite.openDatabaseSync('box-coach');
         const allRows: { id: number, technics:string, difficulty:number}[] = db.getAllSync('SELECT * FROM combos WHERE difficulty >= ? AND difficulty <= ?', [currentTraining['min-dificulty'], currentTraining['max-dificulty']]);
         for (let i = 0; i < allRows.length; i++) {
             const technics = allRows[i].technics.split(',').map((x) => parseInt(x));
             result.push({"id": allRows[i].id, "Technics": technics, "difficulty": allRows[i].difficulty});
-        }
+        }*/
         return result;
     }
 
@@ -178,25 +178,25 @@ const Training = () => {
     }
 
     async function playComboTts(combo:number[]) {
-        console.log(combo)
+
         playSoundsInSequence(combo)
     }
 
      
     
     async function startTraining() {
-        setLanguage(language);
         setStarted(true)
         setRemainingTime(currentTraining['round-duration'])
         setRounds(currentTraining.rounds)
         setCurrentRound(1)
         const { sound } = await Audio.Sound.createAsync(require('@/assets/Sounds/en/start.mp3'));
         await sound.playAsync();
-        await sound.setOnPlaybackStatusUpdate(async (status) => {
+        sound.setOnPlaybackStatusUpdate(async (status) => {
             // @ts-ignore
             if (status.didJustFinish) {
                 await sound.unloadAsync();
             }
+
         })
     }
 
@@ -226,7 +226,7 @@ const Training = () => {
                 }
                 play()
                 setStarted(false)
-                console.log('Training finished')
+
                 router.navigate('/')
                 return;
             }
@@ -267,7 +267,7 @@ const Training = () => {
         // Save the interval ID to clear it when the component unmounts
         timerId = setTimeout(() => {
             setDuration(remainingTime - 1);
-            console.log(remainingTime)
+
             setRemainingTime(remainingTime - 1);
         }, 1000);
 

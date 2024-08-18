@@ -48,6 +48,13 @@ function deleteTraining(id:number) {
 
 
 export default function Home() {
+    const db = SQLite.openDatabaseSync('box-coach');
+        //db.execSync('DROP TABLE IF EXISTS trainings');
+
+        db.execSync(
+            'CREATE TABLE IF NOT EXISTS trainings(training_id INTEGER PRIMARY KEY AUTOINCREMENT, round_duration INTEGER, rounds INTEGER, rest_duration INTEGER, name VARCHAR(255), min_difficulty INTEGER, max_difficulty INTEGER)'
+        );
+        db.execAsync('CREATE TABLE IF NOT EXISTS combos(id INTEGER PRIMARY KEY AUTOINCREMENT, technics TEXT, difficulty INTEGER)');
     const userTrainings = getUserTrainings();
   return (
     <ScrollView className='flex-1 bg-gray-800'>
